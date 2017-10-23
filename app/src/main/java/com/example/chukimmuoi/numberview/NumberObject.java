@@ -67,7 +67,7 @@ public class NumberObject {
         this.mLeft = left;
         this.mTop  = top;
 
-        this.mPaint = new Paint();
+        this.mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         this.mPaint.setDither(true);
         this.mPaint.setAntiAlias(true);
         this.mPaint.setStyle(Paint.Style.FILL);
@@ -79,23 +79,28 @@ public class NumberObject {
         if (number < 0) number = 0;
 
         this.mNumber = number < 10 ? "0".concat(String.valueOf(number)) : String.valueOf(number);
-        String[] arrayString = this.mNumber.split("");
+        char[] arrayString = this.mNumber.trim().toCharArray();
         if (mBitmapArray != null) {
             mBitmapArray.clear();
             mBitmapArray = null;
         }
         mBitmapArray = new ArrayList<>(arrayString.length);
 
-        mWidth = 0;
-        for (String numberString : arrayString) {
+        mWidth  = 0;
+        mHeight = 0;
+        for (char numberChar : arrayString) {
+            String numberString = String.valueOf(numberChar);
             if (isNumber(numberString)) {
                 int numberInt = Integer.parseInt(numberString);
                 Bitmap bitmap = BitmapFactory.decodeResource(
                         mResources,
                         isScore ? RES_ID_BITMAP_SCORE[numberInt] : RES_ID_BITMAP_NUMBER[numberInt]
                 );
-                mWidth  = mWidth + bitmap.getWidth();
-                mHeight = bitmap.getHeight();
+
+                mWidth = mWidth + bitmap.getWidth();
+                if (bitmap.getHeight() > mHeight) {
+                    mHeight = bitmap.getHeight();
+                }
 
                 mBitmapArray.add(bitmap);
             }
@@ -103,9 +108,8 @@ public class NumberObject {
     }
 
     private boolean isNumber(String string) {
-        if (TextUtils.isEmpty(string)) {
-            return false;
-        }
+        if (TextUtils.isEmpty(string)) return false;
+
         return string.matches("[+-]?\\d*(\\.\\d+)?");
     }
 

@@ -84,15 +84,15 @@ public class NumberView extends View {
         super.onLayout(changed, left, top, right, bottom);
 
         // Chính giữa màn hình.
-        int xCenter = getWidth() / 2;
-        int yCenter = getHeight() / 2;
+        Float xCenter = getWidth() * 0.5F;
+        Float yCenter = getHeight() * 0.5F;
 
-        // Lấy ra left & top dựa trên width, height, xCenter, yCenter.
-        int leftNumber = xCenter - (mNumberObject.getWidth() / 2);
-        int topNumber = yCenter - (mNumberObject.getHeight() / 2);
+        // Lấy ra left & top (vị trí bắt đầu vẽ) dựa trên width, height, xCenter, yCenter.
+        Float leftNumber = xCenter - mNumberObject.getWidth() * 0.5F;
+        Float topNumber  = yCenter - mNumberObject.getHeight() * 0.5F;
 
-        mNumberObject.setLeft(Float.valueOf(leftNumber));
-        mNumberObject.setTop(Float.valueOf(topNumber));
+        mNumberObject.setLeft(leftNumber);
+        mNumberObject.setTop(topNumber);
     }
 
     @Override
@@ -104,7 +104,7 @@ public class NumberView extends View {
         mNumberObject.onDraw(canvas);
 
         // Khôi phuc lại trạng thái lúc đầu của canvas sau khi thực hiện các phép biến đổi:
-        // translate,scale,rotate,skew,concat or clipRect, clipPath.
+        // translate, scale, rotate, skew, concat or clipRect, clipPath.
         canvas.restore();
     }
 

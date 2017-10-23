@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
     tools:context="com.example.chukimmuoi.numberview.MainActivity">
 
     <com.example.chukimmuoi.numberview.NumberView
@@ -14,7 +13,6 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="#000000"
         app:number_start_number="0"
         app:number_end_number="100"
         app:number_is_score="true"
