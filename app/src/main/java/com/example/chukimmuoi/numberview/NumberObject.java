@@ -1,0 +1,130 @@
+package com.example.chukimmuoi.numberview;
+
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.text.TextUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @author : Hanet Electronics
+ * @Skype : chukimmuoi
+ * @Mobile : +84 167 367 2505
+ * @Email : muoick@hanet.com
+ * @Website: http://hanet.com/
+ * @Project: NumberView
+ * Created by CHUKIMMUOI on 10/23/2017.
+ */
+public class NumberObject {
+
+    private static final int[] RES_ID_BITMAP_SCORE = {
+            R.drawable.ic_score_0,
+            R.drawable.ic_score_1,
+            R.drawable.ic_score_2,
+            R.drawable.ic_score_3,
+            R.drawable.ic_score_4,
+            R.drawable.ic_score_5,
+            R.drawable.ic_score_6,
+            R.drawable.ic_score_7,
+            R.drawable.ic_score_8,
+            R.drawable.ic_score_9
+
+    };
+
+    private static final int[] RES_ID_BITMAP_NUMBER = {
+            R.drawable.ic_number_0,
+            R.drawable.ic_number_1,
+            R.drawable.ic_number_2,
+            R.drawable.ic_number_3,
+            R.drawable.ic_number_4,
+            R.drawable.ic_number_5,
+            R.drawable.ic_number_6,
+            R.drawable.ic_number_7,
+            R.drawable.ic_number_8,
+            R.drawable.ic_number_9,
+    };
+
+    private List<Bitmap> mBitmapArray;
+    private Paint mPaint;
+    private Float mLeft;
+    private Float mTop;
+
+    private Resources mResources;
+    private String mNumber = "00";
+
+    private int mWidth;
+    private int mHeight;
+
+    private boolean isScore;
+
+    public NumberObject(Resources resources, int number, Float left, Float top) {
+        this.mResources = resources;
+
+        this.mLeft = left;
+        this.mTop = top;
+
+        this.mPaint = new Paint();
+        this.mPaint.setDither(true);
+        this.mPaint.setAntiAlias(true);
+        this.mPaint.setStyle(Paint.Style.FILL);
+
+        setNumber(number);
+    }
+
+    public void setScore(boolean score) {
+        isScore = score;
+    }
+
+    public void setNumber(int number) {
+        if (number < 0) number = 0;
+
+        this.mNumber = number < 10 ? "0".concat(String.valueOf(number)) : String.valueOf(number);
+        String[] arrayString = this.mNumber.split("");
+        if (mBitmapArray != null) {
+            mBitmapArray.clear();
+            mBitmapArray = null;
+        }
+        mBitmapArray = new ArrayList<>(arrayString.length);
+
+        mWidth = 0;
+        for (String numberString : arrayString) {
+            if (!TextUtils.isEmpty(numberString)) {
+                int numberInt = Integer.parseInt(numberString);
+                Bitmap bitmap = BitmapFactory.decodeResource(mResources,
+                        isScore ? RES_ID_BITMAP_SCORE[numberInt] : RES_ID_BITMAP_NUMBER[numberInt]);
+                mWidth = mWidth + bitmap.getWidth();
+                mHeight = bitmap.getHeight();
+
+                mBitmapArray.add(bitmap);
+            }
+        }
+    }
+
+    public void setLeft(Float left) {
+        this.mLeft = left;
+    }
+
+    public void setTop(Float top) {
+        this.mTop = top;
+    }
+
+    public int getWidth() {
+        return mWidth;
+    }
+
+    public int getHeight() {
+        return mHeight;
+    }
+
+    public void onDraw(Canvas canvas) {
+        int size = mBitmapArray.size();
+        for (int i = 0; i < size; i++) {
+            Bitmap bitmap = mBitmapArray.get(i);
+            canvas.drawBitmap(bitmap, mLeft + bitmap.getWidth() * i, mTop, mPaint);
+        }
+    }
+}
