@@ -90,8 +90,10 @@ public class NumberObject {
         for (String numberString : arrayString) {
             if (isNumber(numberString)) {
                 int numberInt = Integer.parseInt(numberString);
-                Bitmap bitmap = BitmapFactory.decodeResource(mResources,
-                        isScore ? RES_ID_BITMAP_SCORE[numberInt] : RES_ID_BITMAP_NUMBER[numberInt]);
+                Bitmap bitmap = BitmapFactory.decodeResource(
+                        mResources,
+                        isScore ? RES_ID_BITMAP_SCORE[numberInt] : RES_ID_BITMAP_NUMBER[numberInt]
+                );
                 mWidth  = mWidth + bitmap.getWidth();
                 mHeight = bitmap.getHeight();
 
