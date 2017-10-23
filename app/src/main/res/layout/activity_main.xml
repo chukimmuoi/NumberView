@@ -14,6 +14,10 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="#000000"/>
+        android:background="#000000"
+        app:number_start_number="0"
+        app:number_end_number="100"
+        app:number_is_score="true"
+        app:number_time_second="10"/>
 
 </android.support.constraint.ConstraintLayout>

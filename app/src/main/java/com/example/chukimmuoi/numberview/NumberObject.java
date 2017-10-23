@@ -32,7 +32,6 @@ public class NumberObject {
             R.drawable.ic_score_7,
             R.drawable.ic_score_8,
             R.drawable.ic_score_9
-
     };
 
     private static final int[] RES_ID_BITMAP_NUMBER = {
@@ -61,11 +60,12 @@ public class NumberObject {
 
     private boolean isScore;
 
-    public NumberObject(Resources resources, int number, Float left, Float top) {
+    public NumberObject(Resources resources, boolean isScore, int number, Float left, Float top) {
         this.mResources = resources;
+        this.isScore    = isScore;
 
         this.mLeft = left;
-        this.mTop = top;
+        this.mTop  = top;
 
         this.mPaint = new Paint();
         this.mPaint.setDither(true);

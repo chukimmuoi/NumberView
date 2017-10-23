@@ -1,10 +1,13 @@
 package com.example.chukimmuoi.numberview;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
 
 /**
  * @author : Hanet Electronics
@@ -19,6 +22,8 @@ public class NumberView extends View {
 
     private NumberObject mNumberObject;
 
+    private int mNumber;
+
     public NumberView(Context context) {
         super(context);
     }
@@ -26,7 +31,16 @@ public class NumberView extends View {
     public NumberView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
-        mNumberObject = new NumberObject(context.getResources(), 98, 0F, 0F);
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.NumberView);
+
+        final int startNumber = typedArray.getInteger(R.styleable.NumberView_number_start_number, 0);
+        final int endNumber   = typedArray.getInteger(R.styleable.NumberView_number_end_number, 0);
+        final boolean isScore = typedArray.getBoolean(R.styleable.NumberView_number_is_score, false);
+        final int timeSecond  = typedArray.getInteger(R.styleable.NumberView_number_time_second, 0);
+
+        mNumberObject = new NumberObject(context.getResources(), isScore, startNumber, 0F, 0F);
+
+        start(startNumber, endNumber, timeSecond * 1000);
     }
 
     public NumberView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
@@ -48,16 +62,6 @@ public class NumberView extends View {
         setMeasuredDimension(width, height);
     }
 
-    /**
-     * Reconcile a desired size for the view contents with a {@link android.view.View.MeasureSpec}
-     * constraint passed by the parent.
-     *
-     * This is a simplified version of {@link View#resolveSize(int, int)}
-     *
-     * @param contentSize Size of the view's contents.
-     * @param measureSpec A {@link android.view.View.MeasureSpec} passed by the parent.
-     * @return A size that best fits {@code contentSize} while respecting the parent's constraints.
-     */
     private int reconcileSize(int contentSize, int measureSpec) {
         final int mode = MeasureSpec.getMode(measureSpec);
         final int specSize = MeasureSpec.getSize(measureSpec);
@@ -96,5 +100,25 @@ public class NumberView extends View {
         super.onDraw(canvas);
 
         mNumberObject.onDraw(canvas);
+    }
+
+    public void setNumber(int number) {
+        boolean isChangeLength = String.valueOf(number).length() > String.valueOf(mNumber).length();
+        this.mNumber = number;
+
+        mNumberObject.setNumber(number);
+
+        if (isChangeLength) {
+            requestLayout();
+        } else {
+            invalidate();
+        }
+    }
+
+    public void start(int start, int end, long time) {
+        ObjectAnimator animator = ObjectAnimator.ofInt(this, "number", start, end);
+        animator.setInterpolator(new AccelerateDecelerateInterpolator());
+        animator.setDuration(time);
+        animator.start();
     }
 }

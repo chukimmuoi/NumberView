@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="NumberView">
-
+        <attr name="number_start_number" format="integer"/>
+        <attr name="number_end_number" format="integer"/>
+        <attr name="number_is_score" format="boolean"/>
+        <attr name="number_time_second" format="integer"/>
     </declare-styleable>
 </resources>
