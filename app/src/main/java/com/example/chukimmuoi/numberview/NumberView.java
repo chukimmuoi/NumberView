@@ -51,11 +51,11 @@ public class NumberView extends View {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-        // Width & height nho nhat cua number.
+        // Width & height nhỏ nhất của number.
         final int desiredWidth = mNumberObject.getWidth();
         final int desireHeight = mNumberObject.getHeight();
 
-        // Tinh toan, thoa thuan voi viewGroup de xac dinh kich thuoc cho view.
+        // Tính toán, thỏa thuận với viewGroup để xác định kích thước cho view.
         int width = reconcileSize(desiredWidth, widthMeasureSpec);
         int height = reconcileSize(desireHeight, heightMeasureSpec);
 
@@ -83,11 +83,11 @@ public class NumberView extends View {
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
 
-        // Chinh giua man hinh.
+        // Chính giữa màn hình.
         int xCenter = getWidth() / 2;
         int yCenter = getHeight() / 2;
 
-        // Lay ra left & top dua tren width, height, xCenter, yCenter.
+        // Lấy ra left & top dựa trên width, height, xCenter, yCenter.
         int leftNumber = xCenter - (mNumberObject.getWidth() / 2);
         int topNumber = yCenter - (mNumberObject.getHeight() / 2);
 
@@ -98,8 +98,14 @@ public class NumberView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        // Lưu lại trạng thái ban đầu của canvas.
+        canvas.save();
 
         mNumberObject.onDraw(canvas);
+
+        // Khôi phuc lại trạng thái lúc đầu của canvas sau khi thực hiện các phép biến đổi:
+        // translate,scale,rotate,skew,concat or clipRect, clipPath.
+        canvas.restore();
     }
 
     public void setNumber(int number) {
