@@ -75,10 +75,6 @@ public class NumberObject {
         setNumber(number);
     }
 
-    public void setScore(boolean score) {
-        isScore = score;
-    }
-
     public void setNumber(int number) {
         if (number < 0) number = 0;
 
@@ -92,16 +88,23 @@ public class NumberObject {
 
         mWidth = 0;
         for (String numberString : arrayString) {
-            if (!TextUtils.isEmpty(numberString)) {
+            if (isNumber(numberString)) {
                 int numberInt = Integer.parseInt(numberString);
                 Bitmap bitmap = BitmapFactory.decodeResource(mResources,
                         isScore ? RES_ID_BITMAP_SCORE[numberInt] : RES_ID_BITMAP_NUMBER[numberInt]);
-                mWidth = mWidth + bitmap.getWidth();
+                mWidth  = mWidth + bitmap.getWidth();
                 mHeight = bitmap.getHeight();
 
                 mBitmapArray.add(bitmap);
             }
         }
+    }
+
+    private boolean isNumber(String string) {
+        if (TextUtils.isEmpty(string)) {
+            return false;
+        }
+        return string.matches("[+-]?\\d*(\\.\\d+)?");
     }
 
     public void setLeft(Float left) {
