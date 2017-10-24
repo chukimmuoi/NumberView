@@ -58,11 +58,10 @@ public class NumberObject {
     private int mWidth;
     private int mHeight;
 
-    private boolean isScore;
+    private char[] mNumberArray;
 
     public NumberObject(Resources resources, boolean isScore, int number, Float left, Float top) {
         this.mResources = resources;
-        this.isScore    = isScore;
 
         this.mLeft = left;
         this.mTop  = top;
@@ -72,6 +71,16 @@ public class NumberObject {
         this.mPaint.setAntiAlias(true);
         this.mPaint.setStyle(Paint.Style.FILL);
 
+        mBitmapArray = new ArrayList<>(10);
+        for (int i = 0; i < 10; i++) {
+            Bitmap bitmap = BitmapFactory.decodeResource(
+                    mResources,
+                    isScore ? RES_ID_BITMAP_SCORE[i] : RES_ID_BITMAP_NUMBER[i]
+            );
+
+            mBitmapArray.add(bitmap);
+        }
+
         setNumber(number);
     }
 
@@ -79,28 +88,20 @@ public class NumberObject {
         if (number < 0) number = 0;
 
         this.mNumber = number < 10 ? "0".concat(String.valueOf(number)) : String.valueOf(number);
-        char[] arrayString = this.mNumber.trim().toCharArray();
-        clearListBitmap();
-
-        mBitmapArray = new ArrayList<>(arrayString.length);
+        mNumberArray = this.mNumber.trim().toCharArray();
 
         mWidth  = 0;
         mHeight = 0;
-        for (char numberChar : arrayString) {
+        for (char numberChar : mNumberArray) {
             String numberString = String.valueOf(numberChar);
             if (isNumber(numberString)) {
                 int numberInt = Integer.parseInt(numberString);
-                Bitmap bitmap = BitmapFactory.decodeResource(
-                        mResources,
-                        isScore ? RES_ID_BITMAP_SCORE[numberInt] : RES_ID_BITMAP_NUMBER[numberInt]
-                );
 
-                mWidth = mWidth + bitmap.getWidth();
+                mWidth = mWidth + mBitmapArray.get(numberInt).getWidth();
+                Bitmap bitmap = mBitmapArray.get(numberInt);
                 if (bitmap.getHeight() > mHeight) {
                     mHeight = bitmap.getHeight();
                 }
-
-                mBitmapArray.add(bitmap);
             }
         }
     }
@@ -129,9 +130,14 @@ public class NumberObject {
 
     public void onDraw(Canvas canvas) {
         int i = 0;
-        for (Bitmap bitmap : mBitmapArray) {
-            canvas.drawBitmap(bitmap, mLeft + bitmap.getWidth() * i, mTop, mPaint);
-            i++;
+        for (char numberChar : mNumberArray) {
+            String numberString = String.valueOf(numberChar);
+            if (isNumber(numberString)) {
+                int numberInt = Integer.parseInt(numberString);
+                Bitmap bitmap = mBitmapArray.get(numberInt);
+                canvas.drawBitmap(bitmap, mLeft + bitmap.getWidth() * i, mTop, mPaint);
+                i++;
+            }
         }
     }
 
