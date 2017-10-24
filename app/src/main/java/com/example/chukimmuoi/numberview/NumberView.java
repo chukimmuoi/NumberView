@@ -22,6 +22,8 @@ public class NumberView extends View {
 
     private NumberObject mNumberObject;
 
+    private ObjectAnimator mAnimator;
+
     private int mNumber;
 
     public NumberView(Context context) {
@@ -124,9 +126,14 @@ public class NumberView extends View {
     }
 
     public void start(int start, int end, long time) {
-        ObjectAnimator animator = ObjectAnimator.ofInt(this, "number", start, end);
-        animator.setInterpolator(new AccelerateDecelerateInterpolator());
-        animator.setDuration(time);
-        animator.start();
+        mAnimator = ObjectAnimator.ofInt(this, "number", start, end);
+        mAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
+        mAnimator.setDuration(time);
+        mAnimator.start();
+    }
+
+    public void onDestroy() {
+        if (mAnimator != null) mAnimator.cancel();
+        if (mNumberObject != null) mNumberObject.onDestroy();
     }
 }
