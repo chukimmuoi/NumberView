@@ -80,10 +80,8 @@ public class NumberObject {
 
         this.mNumber = number < 10 ? "0".concat(String.valueOf(number)) : String.valueOf(number);
         char[] arrayString = this.mNumber.trim().toCharArray();
-        if (mBitmapArray != null) {
-            mBitmapArray.clear();
-            mBitmapArray = null;
-        }
+        clearListBitmap();
+
         mBitmapArray = new ArrayList<>(arrayString.length);
 
         mWidth  = 0;
@@ -130,10 +128,32 @@ public class NumberObject {
     }
 
     public void onDraw(Canvas canvas) {
-        int size = mBitmapArray.size();
-        for (int i = 0; i < size; i++) {
-            Bitmap bitmap = mBitmapArray.get(i);
+        int i = 0;
+        for (Bitmap bitmap : mBitmapArray) {
             canvas.drawBitmap(bitmap, mLeft + bitmap.getWidth() * i, mTop, mPaint);
+            i++;
         }
+    }
+
+    private void clearPaint() {
+        if (mPaint != null) {
+            mPaint.reset();
+            mPaint = null;
+        }
+    }
+
+    private void clearListBitmap() {
+        if (mBitmapArray != null) {
+            for (Bitmap bitmap : mBitmapArray) {
+                bitmap.recycle();
+            }
+            mBitmapArray.clear();
+            mBitmapArray = null;
+        }
+    }
+
+    public void onDestroy() {
+        clearPaint();
+        clearListBitmap();
     }
 }

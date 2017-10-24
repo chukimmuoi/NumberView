@@ -38,6 +38,8 @@ public class NumberView extends View {
         final boolean isScore = typedArray.getBoolean(R.styleable.NumberView_number_is_score, false);
         final int timeSecond  = typedArray.getInteger(R.styleable.NumberView_number_time_second, 0);
 
+        typedArray.recycle();
+
         mNumberObject = new NumberObject(context.getResources(), isScore, startNumber, 0F, 0F);
 
         start(startNumber, endNumber, timeSecond * 1000);
