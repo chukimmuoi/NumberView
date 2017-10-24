@@ -134,6 +134,7 @@ public class NumberObject {
             String numberString = String.valueOf(numberChar);
             if (isNumber(numberString)) {
                 int numberInt = Integer.parseInt(numberString);
+                if (mBitmapArray == null || mBitmapArray.isEmpty()) return;
                 Bitmap bitmap = mBitmapArray.get(numberInt);
                 canvas.drawBitmap(bitmap, mLeft + bitmap.getWidth() * i, mTop, mPaint);
                 i++;
