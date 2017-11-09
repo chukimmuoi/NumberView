@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:number_start_number="0"
         app:number_end_number="100"
-        app:number_is_score="true"
+        app:number_is_score="false"
         app:number_time_second="10"/>
 
 </android.support.constraint.ConstraintLayout>
