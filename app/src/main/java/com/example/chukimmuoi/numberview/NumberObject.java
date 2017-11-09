@@ -157,6 +157,8 @@ public class NumberObject {
             mBitmapArray.clear();
             mBitmapArray = null;
         }
+
+        System.gc();
     }
 
     public void onDestroy() {
